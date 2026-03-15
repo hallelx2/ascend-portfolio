@@ -22,11 +22,20 @@ function DogeCoin() {
   const innerMaterialRef = useRef<THREE.MeshPhysicalMaterial>(null);
   const { camera, size } = useThree();
   
+  // Reuse objects to avoid garbage collection
+  const vec = useRef(new THREE.Vector3());
+  const targetPos = useRef(new THREE.Vector3());
+  const startPos = useRef(new THREE.Vector3());
+  const color = useRef(new THREE.Color());
+  const targetColor = useRef(new THREE.Color());
+  const scaleVec = useRef(new THREE.Vector3());
+  
   const [activeIndex, setActiveIndex] = useState(0);
   const [overrideTarget, setOverrideTarget] = useState<string | null>(null);
-  const targetPos = useRef(new THREE.Vector3(0, 0, 0));
-  const startPos = useRef(new THREE.Vector3(0, 0, 0));
   const animProgress = useRef({ value: 0 });
+
+  // Cache DOM elements
+  const targetEl = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const triggers = sections.map((id, index) => {
@@ -69,52 +78,44 @@ function DogeCoin() {
   useFrame((state, delta) => {
     if (!groupRef.current || !materialRef.current || !innerMaterialRef.current) return;
 
-    // 1. Calculate target 3D position from DOM element
+    // 1. Calculate target 3D position
     const targetId = overrideTarget || targets[activeIndex];
     const el = document.getElementById(targetId);
 
     if (el) {
       const rect = el.getBoundingClientRect();
       
-      // Calculate center of the element in NDC (-1 to +1)
       const x = (rect.left + rect.width / 2) / size.width * 2 - 1;
       const y = -(rect.top + rect.height / 2) / size.height * 2 + 1;
 
-      // Unproject to 3D space
-      const vector = new THREE.Vector3(x, y, 0.5);
-      vector.unproject(camera);
-      const dir = vector.sub(camera.position).normalize();
+      vec.current.set(x, y, 0.5);
+      vec.current.unproject(camera);
+      const dir = vec.current.clone().sub(camera.position).normalize();
       
-      // Choose a fixed Z distance for the coin (e.g., Z=0)
       const distance = (0 - camera.position.z) / dir.z;
       const newPos = camera.position.clone().add(dir.multiplyScalar(distance));
 
-      // Fine-tune position for contact section
       if (activeIndex === 4 && !overrideTarget) {
-        newPos.x += 0.0; // Adjust horizontal alignment
-        newPos.y += 0.5; // Adjust vertical alignment (shifted upward)
+        newPos.y += 0.5;
       }
 
       if (overrideTarget) {
-        // Calculate bezier curve for trajectory
         const p0 = startPos.current;
         const p2 = newPos;
-        // Control point: halfway between p0 and p2, but higher up to create an arc
         const p1 = new THREE.Vector3(
           (p0.x + p2.x) / 2,
-          Math.max(p0.y, p2.y) + 4, // arc height
+          Math.max(p0.y, p2.y) + 4,
           (p0.z + p2.z) / 2
         );
 
         const t = animProgress.current.value;
         const mt = 1 - t;
         
-        // Quadratic bezier
-        const currentX = mt * mt * p0.x + 2 * mt * t * p1.x + t * t * p2.x;
-        const currentY = mt * mt * p0.y + 2 * mt * t * p1.y + t * t * p2.y;
-        const currentZ = mt * mt * p0.z + 2 * mt * t * p1.z + t * t * p2.z;
-
-        targetPos.current.set(currentX, currentY, currentZ);
+        targetPos.current.set(
+          mt * mt * p0.x + 2 * mt * t * p1.x + t * t * p2.x,
+          mt * mt * p0.y + 2 * mt * t * p1.y + t * t * p2.y,
+          mt * mt * p0.z + 2 * mt * t * p1.z + t * t * p2.z
+        );
         groupRef.current.position.copy(targetPos.current);
       } else {
         targetPos.current.copy(newPos);
@@ -123,18 +124,18 @@ function DogeCoin() {
     }
 
     // 3. Smoothly change color
-    const targetColor = new THREE.Color(overrideTarget ? '#ffffff' : colors[activeIndex]);
-    materialRef.current.color.lerp(targetColor, 0.05);
-    materialRef.current.emissive.lerp(targetColor, 0.05);
-    innerMaterialRef.current.color.lerp(targetColor, 0.05);
+    targetColor.current.set(overrideTarget ? '#ffffff' : colors[activeIndex]);
+    materialRef.current.color.lerp(targetColor.current, 0.05);
+    materialRef.current.emissive.lerp(targetColor.current, 0.05);
+    innerMaterialRef.current.color.lerp(targetColor.current, 0.05);
 
     // 4. Smoothly change scale
-    // Make it much smaller when stored in the navbar
     const targetScale = overrideTarget ? 0.15 : scales[activeIndex];
-    groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.05);
+    scaleVec.current.set(targetScale, targetScale, targetScale);
+    groupRef.current.scale.lerp(scaleVec.current, 0.05);
 
     // 5. Constant rotation
-    groupRef.current.rotation.y += delta * (overrideTarget ? 8 : 1.5); // Spin much faster when storing
+    groupRef.current.rotation.y += delta * (overrideTarget ? 8 : 1.5);
     groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime) * 0.2;
   });
 
@@ -208,6 +209,10 @@ function RadialDials() {
   const groupRef = useRef<THREE.Group>(null);
   const { camera, size } = useThree();
   
+  // Reuse objects
+  const vec = useRef(new THREE.Vector3());
+  const targetPos = useRef(new THREE.Vector3());
+  
   useLayoutEffect(() => {
     if (!groupRef.current) return;
     
@@ -231,20 +236,20 @@ function RadialDials() {
     if (groupRef.current) {
       groupRef.current.rotation.z = state.clock.elapsedTime * 0.2;
       
-      // Track the projects coin target for the dials too
       const el = document.getElementById('projects-coin-target');
       if (el) {
         const rect = el.getBoundingClientRect();
         const x = (rect.left + rect.width / 2) / size.width * 2 - 1;
         const y = -(rect.top + rect.height / 2) / size.height * 2 + 1;
-        const vector = new THREE.Vector3(x, y, 0.5);
-        vector.unproject(camera);
-        const dir = vector.sub(camera.position).normalize();
+        
+        vec.current.set(x, y, 0.5);
+        vec.current.unproject(camera);
+        const dir = vec.current.clone().sub(camera.position).normalize();
         const distance = (0 - camera.position.z) / dir.z;
         const newPos = camera.position.clone().add(dir.multiplyScalar(distance));
         
-        // Place dials slightly behind the coin
-        groupRef.current.position.lerp(new THREE.Vector3(newPos.x, newPos.y, -1), 0.1);
+        targetPos.current.set(newPos.x, newPos.y, -1);
+        groupRef.current.position.lerp(targetPos.current, 0.1);
       }
     }
   });
@@ -270,7 +275,7 @@ function RadialDials() {
 export default function Scene() {
   return (
     <div className="fixed top-0 left-0 w-screen h-screen z-20 pointer-events-none">
-      <Canvas camera={{ position: [0, 0, 10], fov: 45 }} style={{ pointerEvents: 'none' }}>
+      <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 2]} style={{ pointerEvents: 'none' }}>
         <Suspense fallback={null}>
           <Environment preset="city" />
           <ambientLight intensity={0.5} />
