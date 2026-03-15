@@ -223,15 +223,16 @@ function RadialDials() {
 
   return (
     <group ref={groupRef}>
-      {[...Array(3)].map((_, i) => (
-        <Torus key={i} args={[3 + i * 1.5, 0.02, 16, 100]} rotation={[0, 0, 0]}>
-          <meshBasicMaterial color="#06b6d4" transparent opacity={0.3 - i * 0.1} />
-        </Torus>
-      ))}
+      <Torus args={[1.3, 0.015, 16, 100]} rotation={[0, 0, 0]}>
+        <meshBasicMaterial color="#10b981" transparent opacity={0.4} />
+      </Torus>
+      <Torus args={[1.6, 0.008, 16, 100]} rotation={[0, 0, 0]}>
+        <meshBasicMaterial color="#10b981" transparent opacity={0.2} />
+      </Torus>
       {[...Array(12)].map((_, i) => (
-        <mesh key={`tick-${i}`} position={[Math.cos(i * Math.PI / 6) * 3, Math.sin(i * Math.PI / 6) * 3, 0]} rotation={[0, 0, i * Math.PI / 6]}>
-          <boxGeometry args={[0.5, 0.05, 0.05]} />
-          <meshBasicMaterial color="#06b6d4" transparent opacity={0.5} />
+        <mesh key={`tick-${i}`} position={[Math.cos(i * Math.PI / 6) * 1.3, Math.sin(i * Math.PI / 6) * 1.3, 0]} rotation={[0, 0, i * Math.PI / 6]}>
+          <boxGeometry args={[0.1, 0.02, 0.02]} />
+          <meshBasicMaterial color="#10b981" transparent opacity={0.6} />
         </mesh>
       ))}
     </group>
