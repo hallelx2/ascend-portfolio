@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { audio } from '@/lib/audioManager';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
+import Magnetic from '@/components/Magnetic';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -46,22 +47,27 @@ export default function Footer() {
               className="text-4xl md:text-6xl font-serif font-medium leading-[1.1] tracking-tighter mb-8"
             >
               Ready to ascend <br />
-              <span className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent pr-6 pb-4 pl-2">beyond the noise?</span>
+              <span className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent box-decoration-clone pr-2 pb-2 pl-1">beyond the noise?</span>
             </motion.h2>
             
-            <motion.a 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              href="#contact-form"
-              className="group inline-flex items-center gap-4 px-8 py-4 rounded-full bg-white text-black text-sm font-bold hover:bg-gray-200 transition-all duration-300"
             >
-              Start Your Campaign
-              <span className="bg-black text-white rounded-full p-1.5 group-hover:-rotate-45 transition-transform duration-300">
-                <ArrowRight size={16} />
-              </span>
-            </motion.a>
+              <Magnetic strength={0.2}>
+                <a 
+                  href="#contact-form"
+                  className="group inline-flex items-center gap-4 px-8 py-4 rounded-full bg-white text-black text-sm font-bold hover:bg-gray-200 transition-all duration-300"
+                >
+                  Start Your Campaign
+                  <span className="bg-black text-white rounded-full p-1.5 group-hover:-rotate-45 transition-transform duration-300">
+                    <ArrowRight size={16} />
+                  </span>
+                </a>
+              </Magnetic>
+            </motion.div>
           </div>
 
           {/* Links Grid */}

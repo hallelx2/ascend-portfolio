@@ -6,6 +6,7 @@ import { audio } from '@/lib/audioManager';
 import { ArrowRight } from 'lucide-react';
 import { Canvas } from '@react-three/fiber';
 import { Text, Float, Environment } from '@react-three/drei';
+import Magnetic from '@/components/Magnetic';
 
 function Success3DText({ name }: { name: string }) {
   return (
@@ -112,7 +113,7 @@ export default function ContactSection() {
           <h3 className="text-4xl md:text-6xl font-serif leading-[1.1] tracking-tight text-white">
             Ready to <br />
             <span 
-              className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent pr-6 pb-4 pl-2"
+              className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent box-decoration-clone pr-2 pb-2 pl-1"
             >
               {displayedText}
               <span className={`inline-block w-[2px] h-[1em] bg-purple-400 ml-1 ${showCursor ? 'opacity-100' : 'opacity-0'}`}></span>?
@@ -171,17 +172,19 @@ export default function ContactSection() {
                     placeholder="Tell us about your vision..."
                   />
                 </div>
-                <motion.button 
-                  type="submit"
-                  animate={isIntaking ? { backgroundColor: "#a855f7", scale: 1.1 } : {}}
-                  className="mt-auto group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-black text-sm font-bold hover:scale-105 transition-all duration-300"
-                >
-                  <div className="absolute inset-0 rounded-full bg-white blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-500 -z-10" />
-                  {isIntaking ? "Intaking..." : "Submit Request"}
-                  <span className="bg-black text-white rounded-full p-1 group-hover:translate-x-1 transition-transform duration-300">
-                    <ArrowRight size={14} />
-                  </span>
-                </motion.button>
+                <Magnetic strength={0.2}>
+                  <motion.button 
+                    type="submit"
+                    animate={isIntaking ? { backgroundColor: "#a855f7", scale: 1.1 } : {}}
+                    className="mt-auto group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-black text-sm font-bold hover:scale-105 transition-all duration-300 w-full md:w-auto"
+                  >
+                    <div className="absolute inset-0 rounded-full bg-white blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-500 -z-10" />
+                    {isIntaking ? "Intaking..." : "Submit Request"}
+                    <span className="bg-black text-white rounded-full p-1 group-hover:translate-x-1 transition-transform duration-300">
+                      <ArrowRight size={14} />
+                    </span>
+                  </motion.button>
+                </Magnetic>
               </motion.form>
             ) : (
               <motion.div 

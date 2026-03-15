@@ -35,7 +35,7 @@ export default function HeroSection() {
                 initial={{ y: "120%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                className="block italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent pr-6 pb-4 pl-2"
+                className="block italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent box-decoration-clone pr-2 pb-2 pl-1"
               >
                 Ascend
               </motion.span>
@@ -45,7 +45,7 @@ export default function HeroSection() {
                 initial={{ y: "120%" }}
                 animate={{ y: 0 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                className="block italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent pr-6 pb-4 pl-2"
+                className="block italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent box-decoration-clone pr-2 pb-2 pl-1"
               >
                 beyond
               </motion.span>
