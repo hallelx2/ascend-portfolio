@@ -141,56 +141,62 @@ function DogeCoin() {
   return (
     <group ref={groupRef}>
       <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-        {/* Outer Ring */}
-        <Torus args={[1.2, 0.15, 32, 100]} rotation={[0, 0, 0]}>
-          <meshStandardMaterial ref={materialRef} color="#FFD700" metalness={0.8} roughness={0.2} emissive="#FFD700" emissiveIntensity={0.2} />
-        </Torus>
+        {/* Main Coin Body */}
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[1.2, 1.2, 0.15, 64]} />
+          <meshPhysicalMaterial 
+            ref={materialRef} 
+            color="#FFD700" 
+            metalness={1} 
+            roughness={0.15} 
+            clearcoat={1}
+            clearcoatRoughness={0.1}
+            emissive="#FFD700" 
+            emissiveIntensity={0.1} 
+          />
+        </mesh>
         
-        {/* Inner Glass Core */}
-        <Cylinder args={[1.1, 1.1, 0.2, 64]} rotation={[Math.PI / 2, 0, 0]}>
+        {/* Inner Coin Face (Recessed) */}
+        <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+          <cylinderGeometry args={[1.05, 1.05, 0.16, 64]} />
           <meshPhysicalMaterial 
             ref={innerMaterialRef}
-            color="#FFD700" 
-            metalness={0.1} 
-            roughness={0.1} 
-            transmission={0.9} 
-            thickness={0.5}
-            ior={1.5}
+            color="#111111" 
+            metalness={0.8} 
+            roughness={0.4} 
+            clearcoat={0.5}
           />
-        </Cylinder>
+        </mesh>
 
-        {/* Center "A" for Ascend */}
-        <group position={[0, 0, 0.15]}>
-          {/* Left leg */}
+        {/* Center "A" for Ascend - Front */}
+        <group position={[0, 0, 0.08]}>
           <mesh position={[-0.2, 0, 0]} rotation={[0, 0, -0.3]}>
-            <boxGeometry args={[0.1, 0.8, 0.1]} />
-            <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.1} />
+            <boxGeometry args={[0.12, 0.8, 0.05]} />
+            <meshPhysicalMaterial color="#ffffff" metalness={0.9} roughness={0.1} clearcoat={1} />
           </mesh>
-          {/* Right leg */}
           <mesh position={[0.2, 0, 0]} rotation={[0, 0, 0.3]}>
-            <boxGeometry args={[0.1, 0.8, 0.1]} />
-            <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.1} />
+            <boxGeometry args={[0.12, 0.8, 0.05]} />
+            <meshPhysicalMaterial color="#ffffff" metalness={0.9} roughness={0.1} clearcoat={1} />
           </mesh>
-          {/* Crossbar */}
           <mesh position={[0, -0.1, 0]}>
-            <boxGeometry args={[0.4, 0.1, 0.1]} />
-            <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.1} />
+            <boxGeometry args={[0.4, 0.12, 0.05]} />
+            <meshPhysicalMaterial color="#ffffff" metalness={0.9} roughness={0.1} clearcoat={1} />
           </mesh>
         </group>
         
         {/* Back side "A" */}
-        <group position={[0, 0, -0.15]} rotation={[0, Math.PI, 0]}>
+        <group position={[0, 0, -0.08]} rotation={[0, Math.PI, 0]}>
           <mesh position={[-0.2, 0, 0]} rotation={[0, 0, -0.3]}>
-            <boxGeometry args={[0.1, 0.8, 0.1]} />
-            <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.1} />
+            <boxGeometry args={[0.12, 0.8, 0.05]} />
+            <meshPhysicalMaterial color="#ffffff" metalness={0.9} roughness={0.1} clearcoat={1} />
           </mesh>
           <mesh position={[0.2, 0, 0]} rotation={[0, 0, 0.3]}>
-            <boxGeometry args={[0.1, 0.8, 0.1]} />
-            <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.1} />
+            <boxGeometry args={[0.12, 0.8, 0.05]} />
+            <meshPhysicalMaterial color="#ffffff" metalness={0.9} roughness={0.1} clearcoat={1} />
           </mesh>
           <mesh position={[0, -0.1, 0]}>
-            <boxGeometry args={[0.4, 0.1, 0.1]} />
-            <meshStandardMaterial color="#ffffff" metalness={1} roughness={0.1} />
+            <boxGeometry args={[0.4, 0.12, 0.05]} />
+            <meshPhysicalMaterial color="#ffffff" metalness={0.9} roughness={0.1} clearcoat={1} />
           </mesh>
         </group>
       </Float>

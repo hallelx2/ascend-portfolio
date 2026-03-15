@@ -112,13 +112,13 @@ export default function Footer() {
         </div>
 
         {/* Massive Typography */}
-        <div className="w-full overflow-hidden flex items-center justify-center border-t border-white/10 pt-12 pb-8">
+        <div className="w-full flex items-center justify-center border-t border-white/10 pt-12 pb-8 overflow-visible">
           <motion.div 
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="text-[15vw] leading-none font-serif font-bold tracking-tighter text-white/5 select-none"
+            className="text-[15vw] leading-tight font-serif font-bold tracking-tighter text-white/5 select-none pl-[2vw]"
           >
             ASCEND.
           </motion.div>

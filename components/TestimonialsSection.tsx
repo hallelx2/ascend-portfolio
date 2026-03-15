@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
+import Image from 'next/image';
 
 const testimonials = [
   { name: 'Animoca Brands', title: 'Ecosystem Lead', quote: 'They scaled our ecosystem beyond expectations. The results were immediate and the team was incredibly responsive to our needs.', avatar: 'https://picsum.photos/seed/animoca/100/100' },
@@ -49,7 +50,7 @@ export default function TestimonialsSection() {
                     </div>
                     <p className="text-lg text-[#D0D0D0] mb-8 flex-grow leading-relaxed">&quot;{t.quote}&quot;</p>
                     <div className="flex items-center gap-4">
-                      <img src={t.avatar} alt={t.name} className="w-12 h-12 rounded-full border border-white/10" />
+                      <Image src={t.avatar} alt={t.name} width={48} height={48} className="w-12 h-12 rounded-full border border-white/10" />
                       <div>
                         <h4 className="text-white font-bold text-lg">{t.name}</h4>
                         <p className="text-sm text-[#888]">{t.title}</p>

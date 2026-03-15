@@ -4,6 +4,7 @@ import PhilosophySection from '@/components/PhilosophySection';
 import AboutSection from '@/components/AboutSection';
 import RadioDialSection from '@/components/RadioDialSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
+import MarqueeSection from '@/components/MarqueeSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import Scene from '@/components/Scene';
@@ -20,6 +21,7 @@ export default function Home() {
       <AboutSection />
       <RadioDialSection />
       <TestimonialsSection />
+      <MarqueeSection />
       <ContactSection />
       <Footer />
     </main>
