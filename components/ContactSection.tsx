@@ -86,12 +86,14 @@ export default function ContactSection() {
     if (name && email && message) {
       setIsIntaking(true);
       audio.playSwoosh(0);
-      window.dispatchEvent(new CustomEvent('coin-swoosh'));
+      
+      // Dispatch event to move coin to navbar
+      window.dispatchEvent(new CustomEvent('coin-store'));
       
       // Delay submission to allow animation
       setTimeout(() => {
         setIsSubmitted(true);
-      }, 1500);
+      }, 1000);
     }
   };
 
@@ -110,7 +112,7 @@ export default function ContactSection() {
           <h3 className="text-4xl md:text-6xl font-serif leading-[1.1] tracking-tight text-white">
             Ready to <br />
             <span 
-              className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+              className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent pr-6 pb-4 pl-2"
             >
               {displayedText}
               <span className={`inline-block w-[2px] h-[1em] bg-purple-400 ml-1 ${showCursor ? 'opacity-100' : 'opacity-0'}`}></span>?
@@ -187,9 +189,17 @@ export default function ContactSection() {
                 initial={{ opacity: 0, rotateY: 90 }}
                 animate={{ opacity: 1, rotateY: 0 }}
                 transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="absolute inset-0 flex items-center justify-center bg-white/5 rounded-3xl border border-purple-500/30 backdrop-blur-md"
+                className="absolute inset-0 flex flex-col items-center justify-center bg-white/5 rounded-3xl border border-purple-500/30 backdrop-blur-md p-8 text-center"
               >
-                <Success3DText name={name} />
+                <div className="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mb-6">
+                  <svg className="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h4 className="text-2xl font-serif text-white mb-2">Message Received</h4>
+                <p className="text-[#A0A0A0] text-sm">
+                  Thanks, {name.split(' ')[0]}. We&apos;ll be in touch shortly to discuss your vision.
+                </p>
               </motion.div>
             )}
           </AnimatePresence>

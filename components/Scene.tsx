@@ -23,7 +23,10 @@ function DogeCoin() {
   const { camera, size } = useThree();
   
   const [activeIndex, setActiveIndex] = useState(0);
+  const [overrideTarget, setOverrideTarget] = useState<string | null>(null);
   const targetPos = useRef(new THREE.Vector3(0, 0, 0));
+  const startPos = useRef(new THREE.Vector3(0, 0, 0));
+  const animProgress = useRef({ value: 0 });
 
   useEffect(() => {
     const triggers = sections.map((id, index) => {
@@ -36,33 +39,30 @@ function DogeCoin() {
       });
     });
 
-    const handleSwoosh = () => {
-      const el = document.getElementById('contact-coin-target');
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        const x = (rect.left + rect.width / 2) / size.width * 2 - 1;
-        const y = -(rect.top + rect.height / 2) / size.height * 2 + 1;
-        const vector = new THREE.Vector3(x, y, 0.5);
-        vector.unproject(camera);
-        const dir = vector.sub(camera.position).normalize();
-        const distance = (0 - camera.position.z) / dir.z;
-        const newPos = camera.position.clone().add(dir.multiplyScalar(distance));
-        
-        gsap.to(groupRef.current!.position, {
-          x: newPos.x,
-          y: newPos.y,
-          z: newPos.z,
-          duration: 1,
-          ease: "power2.inOut"
-        });
+    const handleStore = () => {
+      setOverrideTarget('navbar-get-in-touch-target');
+      if (groupRef.current) {
+        startPos.current.copy(groupRef.current.position);
       }
+      animProgress.current.value = 0;
+      
+      gsap.to(animProgress.current, {
+        value: 1,
+        duration: 1.5,
+        ease: "power2.inOut",
+        onComplete: () => {
+          setTimeout(() => {
+            setOverrideTarget(null);
+          }, 3000);
+        }
+      });
     };
 
-    window.addEventListener('coin-swoosh', handleSwoosh);
+    window.addEventListener('coin-store', handleStore);
 
     return () => {
       triggers.forEach(t => t.kill());
-      window.removeEventListener('coin-swoosh', handleSwoosh);
+      window.removeEventListener('coin-store', handleStore);
     };
   }, [camera, size]);
 
@@ -70,7 +70,7 @@ function DogeCoin() {
     if (!groupRef.current || !materialRef.current || !innerMaterialRef.current) return;
 
     // 1. Calculate target 3D position from DOM element
-    const targetId = targets[activeIndex];
+    const targetId = overrideTarget || targets[activeIndex];
     const el = document.getElementById(targetId);
 
     if (el) {
@@ -90,29 +90,51 @@ function DogeCoin() {
       const newPos = camera.position.clone().add(dir.multiplyScalar(distance));
 
       // Fine-tune position for contact section
-      if (activeIndex === 4) {
+      if (activeIndex === 4 && !overrideTarget) {
         newPos.x += 0.0; // Adjust horizontal alignment
         newPos.y += 0.5; // Adjust vertical alignment (shifted upward)
       }
 
-      targetPos.current.copy(newPos);
+      if (overrideTarget) {
+        // Calculate bezier curve for trajectory
+        const p0 = startPos.current;
+        const p2 = newPos;
+        // Control point: halfway between p0 and p2, but higher up to create an arc
+        const p1 = new THREE.Vector3(
+          (p0.x + p2.x) / 2,
+          Math.max(p0.y, p2.y) + 4, // arc height
+          (p0.z + p2.z) / 2
+        );
+
+        const t = animProgress.current.value;
+        const mt = 1 - t;
+        
+        // Quadratic bezier
+        const currentX = mt * mt * p0.x + 2 * mt * t * p1.x + t * t * p2.x;
+        const currentY = mt * mt * p0.y + 2 * mt * t * p1.y + t * t * p2.y;
+        const currentZ = mt * mt * p0.z + 2 * mt * t * p1.z + t * t * p2.z;
+
+        targetPos.current.set(currentX, currentY, currentZ);
+        groupRef.current.position.copy(targetPos.current);
+      } else {
+        targetPos.current.copy(newPos);
+        groupRef.current.position.lerp(targetPos.current, 0.08);
+      }
     }
 
-    // 2. Smoothly move coin to target position
-    groupRef.current.position.lerp(targetPos.current, 0.08);
-
     // 3. Smoothly change color
-    const targetColor = new THREE.Color(colors[activeIndex]);
+    const targetColor = new THREE.Color(overrideTarget ? '#ffffff' : colors[activeIndex]);
     materialRef.current.color.lerp(targetColor, 0.05);
     materialRef.current.emissive.lerp(targetColor, 0.05);
     innerMaterialRef.current.color.lerp(targetColor, 0.05);
 
     // 4. Smoothly change scale
-    const targetScale = scales[activeIndex];
+    // Make it much smaller when stored in the navbar
+    const targetScale = overrideTarget ? 0.15 : scales[activeIndex];
     groupRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.05);
 
     // 5. Constant rotation
-    groupRef.current.rotation.y += delta * 1.5;
+    groupRef.current.rotation.y += delta * (overrideTarget ? 8 : 1.5); // Spin much faster when storing
     groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime) * 0.2;
   });
 

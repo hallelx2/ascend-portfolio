@@ -29,67 +29,108 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer ref={footerRef} className="relative min-h-[80vh] w-full flex flex-col items-center justify-center px-6 z-10 overflow-hidden bg-[#0a0515]">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.1)_0%,transparent_70%)] z-0" />
+    <footer ref={footerRef} className="relative w-full bg-[#030303] text-white pt-32 pb-8 px-6 md:px-12 overflow-hidden border-t border-white/5 z-10">
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.05)_0%,transparent_50%)] z-0" />
       
-      <div className="relative z-10 text-center flex flex-col items-center mt-20">
-        <motion.h2 
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="text-5xl md:text-7xl lg:text-[8rem] font-serif font-medium leading-[1] tracking-tighter mb-12"
-        >
-          Let&apos;s make <br />
-          <span className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">some noise.</span>
-        </motion.h2>
-        
-        <motion.a 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          href="#contact-form"
-          className="group relative flex items-center gap-4 px-10 py-5 rounded-full bg-white text-black text-lg font-bold hover:scale-105 transition-all duration-300"
-        >
-          <div className="absolute inset-0 rounded-full bg-white blur-md opacity-50 group-hover:opacity-100 group-hover:blur-xl transition-all duration-500 -z-10" />
-          Start Your Campaign
-          <span className="bg-black text-white rounded-full p-2 group-hover:-rotate-45 transition-transform duration-300">
-            <ArrowRight size={18} />
-          </span>
-        </motion.a>
-      </div>
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Top Section: CTA and Links */}
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-32">
+          
+          {/* CTA Area */}
+          <div className="max-w-xl">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-4xl md:text-6xl font-serif font-medium leading-[1.1] tracking-tighter mb-8"
+            >
+              Ready to ascend <br />
+              <span className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent pr-6 pb-4 pl-2">beyond the noise?</span>
+            </motion.h2>
+            
+            <motion.a 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              href="#contact-form"
+              className="group inline-flex items-center gap-4 px-8 py-4 rounded-full bg-white text-black text-sm font-bold hover:bg-gray-200 transition-all duration-300"
+            >
+              Start Your Campaign
+              <span className="bg-black text-white rounded-full p-1.5 group-hover:-rotate-45 transition-transform duration-300">
+                <ArrowRight size={16} />
+              </span>
+            </motion.a>
+          </div>
 
-      <div className="w-full max-w-7xl mx-auto mt-32 p-6 md:p-12 flex flex-col md:flex-row justify-between items-end z-10 border-t border-white/10">
-        <div className="mb-8 md:mb-0 w-full md:w-auto">
-          <div className="text-3xl font-serif font-bold tracking-tighter mb-4 text-white">
-            Ascend.
+          {/* Links Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-24 w-full lg:w-auto">
+            <div className="flex flex-col gap-6">
+              <span className="text-xs uppercase tracking-[0.2em] text-[#666] font-bold">Navigation</span>
+              <div className="flex flex-col gap-4 text-sm text-[#A0A0A0]">
+                <a href="#hero" className="hover:text-white transition-colors">Home</a>
+                <a href="#philosophy" className="hover:text-white transition-colors">Philosophy</a>
+                <a href="#about" className="hover:text-white transition-colors">About</a>
+                <a href="#work" className="hover:text-white transition-colors">Clients</a>
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-6">
+              <span className="text-xs uppercase tracking-[0.2em] text-[#666] font-bold">Socials</span>
+              <div className="flex flex-col gap-4 text-sm text-[#A0A0A0]">
+                <a href="#" className="hover:text-white transition-colors">Twitter / X</a>
+                <a href="#" className="hover:text-white transition-colors">Discord</a>
+                <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+                <a href="#" className="hover:text-white transition-colors">Instagram</a>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-6 col-span-2 md:col-span-1">
+              <span className="text-xs uppercase tracking-[0.2em] text-[#666] font-bold">Contact</span>
+              <div className="flex flex-col gap-4 text-sm text-[#A0A0A0]">
+                <a href="mailto:contact@ascendmarketing.xyz" className="hover:text-white transition-colors">
+                  contact@ascendmarketing.xyz
+                </a>
+                <p className="mt-4 text-[#666] leading-relaxed">
+                  Based in the Metaverse.<br />
+                  Operating globally.
+                </p>
+              </div>
+            </div>
           </div>
-          <p className="text-sm font-sans text-[#A0A0A0] max-w-sm mb-1">
-            Your community is waiting.
-          </p>
-          <a href="mailto:contact@ascendmarketing.xyz" className="text-sm font-sans text-purple-400 hover:text-white transition-colors">
-            contact@ascendmarketing.xyz
-          </a>
         </div>
-        
-        <div className="flex flex-row md:flex-col justify-between md:items-end w-full md:w-auto gap-8 md:gap-2 text-xs uppercase tracking-[0.1em] text-[#A0A0A0]">
-          <div className="flex flex-col gap-2">
-            <span className="text-white mb-2 font-bold">Discover</span>
-            <a href="#about" className="hover:text-purple-400 transition-colors">About</a>
-            <a href="#work" className="hover:text-purple-400 transition-colors">Clients</a>
+
+        {/* Massive Typography */}
+        <div className="w-full overflow-hidden flex items-center justify-center border-t border-white/10 pt-12 pb-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-[15vw] leading-none font-serif font-bold tracking-tighter text-white/5 select-none"
+          >
+            ASCEND.
+          </motion.div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-white/10 text-xs text-[#666] uppercase tracking-widest">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span>All systems operational</span>
           </div>
-          <div className="flex flex-col gap-2">
-            <span className="text-white mb-2 font-bold">Socials</span>
-            <a href="#" className="hover:text-purple-400 transition-colors">Twitter / X</a>
-            <a href="#" className="hover:text-purple-400 transition-colors">Discord</a>
+          <div className="flex items-center gap-1.5 bg-white/5 px-4 py-2 rounded-full">
+            <span className="text-[#A0A0A0]">Created by</span>
+            <span className="font-mono text-white lowercase tracking-normal">hallel</span>
+            <span className="font-['var(--font-orbitron)'] bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-bold text-sm tracking-normal">X2</span>
+          </div>
+          <div className="flex gap-8">
+            <span>© {new Date().getFullYear()} Ascend Marketing</span>
+            <a href="#" className="hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="hover:text-white transition-colors">Terms</a>
           </div>
         </div>
-      </div>
-      
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 pb-6 text-xs text-[#555] z-10 flex justify-between">
-        <span>© 2026 Ascend Marketing. All rights reserved.</span>
-        <span>Privacy Policy</span>
       </div>
     </footer>
   );

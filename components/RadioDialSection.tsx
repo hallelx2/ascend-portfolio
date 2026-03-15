@@ -3,9 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Canvas } from '@react-three/fiber';
-import { Environment } from '@react-three/drei';
-import ShapeIcon from '@/components/ShapeIcon';
+import { motion } from 'motion/react';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -24,43 +22,66 @@ const projects = [
 
 export default function RadioDialSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   return (
-    <section id="work" ref={sectionRef} className="relative w-full py-24 min-h-screen bg-[#030303] z-10 flex flex-col items-center justify-center">
-        <h2 className="text-4xl font-serif text-white mb-10">Ecosystems we&apos;ve scaled</h2>
+    <section id="work" ref={sectionRef} className="relative w-full py-24 min-h-screen bg-[#030303] z-10 flex flex-col items-center justify-center overflow-hidden">
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl md:text-5xl font-serif text-white mb-16 text-center"
+        >
+          Ecosystems we&apos;ve scaled
+        </motion.h2>
         
-        <div className="grid grid-cols-3 grid-rows-3 gap-6 md:gap-8 p-4 md:p-12 z-20 w-full max-w-5xl">
+        <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-4 md:grid-rows-3 gap-4 md:gap-8 p-4 md:p-12 z-20 w-full max-w-5xl relative">
+          
+          {/* Background ambient glow for the whole section */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
           {projects.slice(0, 4).map((project, index) => (
-            <div
+            <motion.div
               key={project.id}
-              ref={(el) => { cardsRef.current[index] = el; }}
-              className="relative w-full aspect-square bg-[#141414] rounded-3xl flex flex-col items-center justify-center text-white p-4 text-center border border-white/5 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.8),inset_0_2px_2px_rgba(255,255,255,0.1),inset_0_-2px_2px_rgba(0,0,0,0.4)] group cursor-pointer hover:bg-[#1a1a1a] transition-all duration-300 hover:scale-[1.02] overflow-hidden"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="relative w-full aspect-square bg-[#0a0a0a] rounded-3xl flex flex-col items-center justify-center text-white p-6 text-center border border-white/5 hover:border-emerald-500/30 shadow-lg group cursor-pointer transition-all duration-500 overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
-              <span className="relative z-10 font-bold text-sm md:text-base transition-transform duration-300 group-hover:-translate-y-4">{project.title}</span>
-              <p className="absolute bottom-4 left-4 right-4 text-xs text-[#888] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-10">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+              
+              <span className="relative z-10 font-bold text-sm md:text-lg tracking-wide transition-transform duration-500 group-hover:-translate-y-6">{project.title}</span>
+              <p className="absolute bottom-6 left-6 right-6 text-xs md:text-sm text-[#888] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 z-10 leading-relaxed">
                 {project.description}
               </p>
-            </div>
+            </motion.div>
           ))}
 
           {/* Central hole for the coin target */}
-          <div id="projects-coin-target" className="w-full aspect-square flex items-center justify-center relative">
+          <div id="projects-coin-target" className="w-full aspect-square flex items-center justify-center relative hidden md:flex">
+            {/* Intense central halo for the coin */}
+            <div className="absolute inset-0 bg-emerald-500/20 rounded-full blur-[60px] pointer-events-none animate-pulse"></div>
           </div>
 
           {projects.slice(4).map((project, index) => (
-            <div
+            <motion.div
               key={project.id}
-              ref={(el) => { cardsRef.current[index + 4] = el; }}
-              className="relative w-full aspect-square bg-[#141414] rounded-3xl flex flex-col items-center justify-center text-white p-4 text-center border border-white/5 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.8),inset_0_2px_2px_rgba(255,255,255,0.1),inset_0_-2px_2px_rgba(0,0,0,0.4)] group cursor-pointer hover:bg-[#1a1a1a] transition-all duration-300 hover:scale-[1.02] overflow-hidden"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: (index + 4) * 0.1 }}
+              className="relative w-full aspect-square bg-[#0a0a0a] rounded-3xl flex flex-col items-center justify-center text-white p-6 text-center border border-white/5 hover:border-emerald-500/30 shadow-lg group cursor-pointer transition-all duration-500 overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
-              <span className="relative z-10 font-bold text-sm md:text-base transition-transform duration-300 group-hover:-translate-y-4">{project.title}</span>
-              <p className="absolute bottom-4 left-4 right-4 text-xs text-[#888] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-10">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+              
+              <span className="relative z-10 font-bold text-sm md:text-lg tracking-wide transition-transform duration-500 group-hover:-translate-y-6">{project.title}</span>
+              <p className="absolute bottom-6 left-6 right-6 text-xs md:text-sm text-[#888] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 z-10 leading-relaxed">
                 {project.description}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
     </section>

@@ -52,6 +52,7 @@ export default function Header() {
           {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
         </button>
         <a 
+          id="navbar-get-in-touch-target"
           href="#contact" 
           className="px-6 py-2.5 rounded-full bg-white text-black text-xs font-bold hover:bg-gray-200 hover:scale-105 transition-all duration-300"
         >
