@@ -32,7 +32,7 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 px-8 md:px-12 py-6 flex items-center justify-between mix-blend-difference">
+    <header className="fixed top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 z-50 px-6 md:px-12 py-6 flex items-center justify-between mix-blend-difference">
       <div className="text-3xl font-serif font-bold tracking-tighter text-white">
         Ascend.
       </div>
