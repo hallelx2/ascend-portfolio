@@ -20,8 +20,8 @@ export default function HeroSection() {
     <section id="hero" className="relative min-h-screen w-full p-4 md:p-8 overflow-hidden bg-purple-600">
       <div className="relative w-full h-[calc(100vh-2rem)] md:h-[calc(100vh-4rem)] bg-[#030303] rounded-[2rem] md:rounded-[3rem] border border-white/10 flex items-center justify-center px-6 md:px-24 overflow-hidden shadow-2xl">
         <div className="max-w-6xl w-full z-10 text-center flex flex-col items-center">
-          <h1 className="text-5xl md:text-7xl lg:text-[6.5rem] font-serif font-medium leading-[1.1] tracking-tighter flex flex-col items-center">
-            <div className="overflow-hidden pb-4 md:pb-6">
+          <h1 className="text-[clamp(2.5rem,8vw,6.5rem)] font-serif font-medium leading-[1.1] tracking-tighter flex flex-col items-center">
+            <div className="overflow-hidden pb-2 md:pb-6">
               <motion.span 
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
@@ -31,7 +31,7 @@ export default function HeroSection() {
                 Time to
               </motion.span>
             </div>
-            <div className="overflow-hidden py-4 md:py-6 flex flex-wrap items-center justify-center gap-4 md:gap-8 -my-4 md:-my-6">
+            <div className="overflow-hidden py-2 md:py-6 flex flex-wrap items-center justify-center gap-2 md:gap-8 -my-2 md:-my-6">
               <motion.span 
                 initial={{ y: "120%" }}
                 animate={{ y: 0, backgroundPosition: ["0% center", "-200% center"] }}
@@ -40,12 +40,12 @@ export default function HeroSection() {
                   backgroundPosition: { duration: 8, repeat: Infinity, ease: "linear" }
                 }}
                 style={{ backgroundSize: "200% auto" }}
-                className="block italic bg-gradient-to-r from-indigo-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent box-decoration-clone pr-4 md:pr-6 pb-2 pl-1"
+                className="block italic bg-gradient-to-r from-indigo-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent box-decoration-clone pr-2 md:pr-6 pb-2 pl-1"
               >
                 Ascend
               </motion.span>
               {/* Spacer for the 3D coin to sit in the center of the text */}
-              <div id="hero-coin-target" className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] shrink-0 flex items-center justify-center"></div>
+              <div id="hero-coin-target" className="w-[50px] h-[50px] md:w-[100px] md:h-[100px] shrink-0 flex items-center justify-center"></div>
               <motion.span 
                 initial={{ y: "120%" }}
                 animate={{ y: 0, backgroundPosition: ["0% center", "-200% center"] }}
@@ -54,12 +54,12 @@ export default function HeroSection() {
                   backgroundPosition: { duration: 8, repeat: Infinity, ease: "linear" }
                 }}
                 style={{ backgroundSize: "200% auto" }}
-                className="block italic bg-gradient-to-r from-indigo-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent box-decoration-clone pr-4 md:pr-6 pb-2 pl-1"
+                className="block italic bg-gradient-to-r from-indigo-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent box-decoration-clone pr-2 md:pr-6 pb-2 pl-1"
               >
                 beyond
               </motion.span>
             </div>
-            <div className="overflow-hidden pb-4 md:pb-6">
+            <div className="overflow-hidden pt-2 pb-4 md:pb-6">
               <motion.span 
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
@@ -75,7 +75,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 1 }}
-            className="mt-12 flex flex-col sm:flex-row items-center gap-8"
+            className="mt-8 md:mt-12 flex flex-col sm:flex-row items-center gap-6 md:gap-8"
           >
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000 group-hover:duration-300 animate-pulse"></div>

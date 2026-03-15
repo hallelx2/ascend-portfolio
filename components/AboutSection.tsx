@@ -48,7 +48,7 @@ export default function AboutSection() {
     <section 
       ref={sectionRef} 
       id="about" 
-      className="relative min-h-screen w-full flex items-center px-6 md:px-24 py-32 z-10 overflow-hidden"
+      className="relative min-h-screen w-full flex items-center px-6 md:px-24 py-16 md:py-32 z-10 overflow-hidden"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -64,8 +64,8 @@ export default function AboutSection() {
         }}
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col justify-center space-y-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 w-full max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col justify-center space-y-6 md:space-y-12">
           <motion.h2 
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -85,7 +85,7 @@ export default function AboutSection() {
               visible: { transition: { staggerChildren: 0.02 } },
               hidden: {}
             }}
-            className="text-3xl md:text-5xl font-serif leading-[1.3] tracking-tight text-white/90 flex flex-wrap gap-x-2 gap-y-2 pb-4"
+            className="text-2xl md:text-5xl font-serif leading-[1.2] md:leading-[1.3] tracking-tight text-white/90 flex flex-wrap gap-x-2 gap-y-2 pb-4"
           >
             {words.map((word, i) => (
               <motion.span
