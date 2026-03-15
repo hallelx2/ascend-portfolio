@@ -2,7 +2,8 @@ import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import PhilosophySection from '@/components/PhilosophySection';
 import AboutSection from '@/components/AboutSection';
-import ProjectsSection from '@/components/ProjectsSection';
+import RadioDialSection from '@/components/RadioDialSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import Scene from '@/components/Scene';
@@ -15,7 +16,8 @@ export default function Home() {
       <HeroSection />
       <PhilosophySection />
       <AboutSection />
-      <ProjectsSection />
+      <RadioDialSection />
+      <TestimonialsSection />
       <ContactSection />
       <Footer />
     </main>

@@ -14,7 +14,7 @@ if (typeof window !== 'undefined') {
 const sections = ['hero', 'philosophy', 'about', 'work', 'contact-form'];
 const targets = ['hero-coin-target', 'philosophy-coin-target', 'about-coin-target', 'projects-coin-target', 'contact-coin-target'];
 const colors = ['#FFD700', '#a855f7', '#06b6d4', '#10b981', '#f43f5e'];
-const scales = [0.55, 1, 1, 1.5, 1]; // Hero is smaller, projects is larger
+const scales = [0.4, 1, 1, 0.8, 0.6]; // Hero is smaller, projects is smaller, contact is smaller
 
 function DogeCoin() {
   const groupRef = useRef<THREE.Group>(null);
@@ -35,8 +35,36 @@ function DogeCoin() {
         onEnterBack: () => setActiveIndex(index),
       });
     });
-    return () => triggers.forEach(t => t.kill());
-  }, []);
+
+    const handleSwoosh = () => {
+      const el = document.getElementById('contact-coin-target');
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const x = (rect.left + rect.width / 2) / size.width * 2 - 1;
+        const y = -(rect.top + rect.height / 2) / size.height * 2 + 1;
+        const vector = new THREE.Vector3(x, y, 0.5);
+        vector.unproject(camera);
+        const dir = vector.sub(camera.position).normalize();
+        const distance = (0 - camera.position.z) / dir.z;
+        const newPos = camera.position.clone().add(dir.multiplyScalar(distance));
+        
+        gsap.to(groupRef.current!.position, {
+          x: newPos.x,
+          y: newPos.y,
+          z: newPos.z,
+          duration: 1,
+          ease: "power2.inOut"
+        });
+      }
+    };
+
+    window.addEventListener('coin-swoosh', handleSwoosh);
+
+    return () => {
+      triggers.forEach(t => t.kill());
+      window.removeEventListener('coin-swoosh', handleSwoosh);
+    };
+  }, [camera, size]);
 
   useFrame((state, delta) => {
     if (!groupRef.current || !materialRef.current || !innerMaterialRef.current) return;
@@ -60,6 +88,12 @@ function DogeCoin() {
       // Choose a fixed Z distance for the coin (e.g., Z=0)
       const distance = (0 - camera.position.z) / dir.z;
       const newPos = camera.position.clone().add(dir.multiplyScalar(distance));
+
+      // Fine-tune position for contact section
+      if (activeIndex === 4) {
+        newPos.x += 0.0; // Adjust horizontal alignment
+        newPos.y += 0.5; // Adjust vertical alignment (shifted upward)
+      }
 
       targetPos.current.copy(newPos);
     }
@@ -206,7 +240,7 @@ function RadialDials() {
 
 export default function Scene() {
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen z-50 pointer-events-none">
+    <div className="fixed top-0 left-0 w-screen h-screen z-20 pointer-events-none">
       <Canvas camera={{ position: [0, 0, 10], fov: 45 }} style={{ pointerEvents: 'none' }}>
         <Suspense fallback={null}>
           <Environment preset="city" />

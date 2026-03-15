@@ -30,7 +30,7 @@ export default function HeroSection() {
                 Time to
               </motion.span>
             </div>
-            <div className="overflow-hidden pb-2 md:pb-4 flex items-center justify-center gap-4 md:gap-8">
+            <div className="overflow-hidden pb-2 md:pb-4 flex flex-wrap items-center justify-center gap-4 md:gap-8">
               <motion.span 
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
@@ -40,7 +40,7 @@ export default function HeroSection() {
                 Ascend
               </motion.span>
               {/* Spacer for the 3D coin to sit in the center of the text */}
-              <div id="hero-coin-target" className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] shrink-0 flex items-center justify-center"></div>
+              <div id="hero-coin-target" className="w-[60px] h-[60px] md:w-[100px] md:h-[100px] shrink-0 flex items-center justify-center"></div>
               <motion.span 
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}

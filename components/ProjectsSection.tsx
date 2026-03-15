@@ -127,14 +127,15 @@ export default function ProjectsSection() {
           
           <div 
             ref={rightColRef} 
-            className="absolute top-0 left-0 w-full grid grid-cols-2 md:grid-cols-3 auto-rows-[150px] gap-4 p-6 md:p-12 pb-[50vh] z-10"
+            className="absolute top-0 left-0 w-full h-full grid grid-cols-3 grid-rows-3 gap-4 p-6 md:p-12 z-10"
           >
             {projects.map((project, index) => (
               <div 
                 key={project.id}
                 ref={(el) => { cardsRef.current[index] = el; }}
-                className={`project-card relative rounded-2xl flex items-center justify-center border border-white/10 hover:border-white/40 transition-all duration-500 overflow-hidden group cursor-pointer ${project.span} ${project.bg} backdrop-blur-md`}
+                className={`project-card relative rounded-3xl flex items-center justify-center border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden group cursor-pointer ${project.bg} backdrop-blur-md shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] ${index === 4 ? 'col-start-2 row-start-2 opacity-0 pointer-events-none' : ''}`}
               >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-50" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                 
                 {/* Hover Glow Effect */}

@@ -31,37 +31,94 @@ function Success3DText({ name }: { name: string }) {
 
 export default function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isIntaking, setIsIntaking] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [displayedText, setDisplayedText] = useState('Scale');
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 500);
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  useEffect(() => {
+    const texts = ['Scale', 'Elevate', 'Ascend', 'Transform', 'Build', 'Create', 'Impact', 'Evolve', 'Disrupt'];
+    let isDeleting = false;
+    let textIndex = 0;
+    let currentText = 'Scale';
+    let timer: NodeJS.Timeout;
+
+    const type = () => {
+      const fullText = texts[textIndex];
+      
+      if (isDeleting) {
+        currentText = fullText.substring(0, currentText.length - 1);
+      } else {
+        currentText = fullText.substring(0, currentText.length + 1);
+      }
+
+      setDisplayedText(currentText);
+
+      let typeSpeed = isDeleting ? 50 : 100;
+
+      if (!isDeleting && currentText === fullText) {
+        typeSpeed = 2000; // Pause at end
+        isDeleting = true;
+      } else if (isDeleting && currentText === '') {
+        isDeleting = false;
+        textIndex = (textIndex + 1) % texts.length;
+        typeSpeed = 500;
+      }
+
+      timer = setTimeout(type, typeSpeed);
+    };
+
+    timer = setTimeout(type, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name && email && message) {
+      setIsIntaking(true);
       audio.playSwoosh(0);
-      setIsSubmitted(true);
+      window.dispatchEvent(new CustomEvent('coin-swoosh'));
+      
+      // Delay submission to allow animation
+      setTimeout(() => {
+        setIsSubmitted(true);
+      }, 1500);
     }
   };
 
   return (
-    <section id="contact-form" className="relative min-h-screen w-full flex items-center justify-center px-6 md:px-24 py-32 z-10 bg-[#030303]">
+    <section id="contact-form" className="relative min-h-screen w-full flex flex-col items-center justify-center px-6 md:px-24 py-32 z-10 bg-[#030303]">
+      <div id="contact-coin-target" className="w-[60px] h-[60px] flex items-center justify-center mb-8"></div>
       <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row gap-16 items-center">
         
         <div className="w-full md:w-1/2 flex flex-col space-y-8">
-          <h2 className="text-xs uppercase tracking-[0.2em] text-purple-400 font-bold flex items-center gap-4">
-            <span className="w-8 h-[1px] bg-purple-400"></span>
-            INITIATE CONTACT
-          </h2>
+          <div className="flex items-center gap-4">
+            <h2 className="text-xs uppercase tracking-[0.2em] text-purple-400 font-bold flex items-center gap-4">
+              <span className="w-8 h-[1px] bg-purple-400"></span>
+              INITIATE CONTACT
+            </h2>
+          </div>
           <h3 className="text-4xl md:text-6xl font-serif leading-[1.1] tracking-tight text-white">
             Ready to <br />
-            <span className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">ascend?</span>
+            <span 
+              className="italic bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+            >
+              {displayedText}
+              <span className={`inline-block w-[2px] h-[1em] bg-purple-400 ml-1 ${showCursor ? 'opacity-100' : 'opacity-0'}`}></span>?
+            </span>
           </h3>
           <p className="text-[#A0A0A0] font-sans">
             Fill out the form to secure your spot. We only work with projects that have the potential to shift the paradigm.
           </p>
-          
-          {/* Target for the 3D coin to sit next to the form */}
-          <div id="contact-coin-target" className="w-[150px] h-[150px] mt-8 flex items-center justify-center"></div>
         </div>
 
         <div className="w-full md:w-1/2 h-[400px] relative perspective-1000 z-50">
@@ -112,16 +169,17 @@ export default function ContactSection() {
                     placeholder="Tell us about your vision..."
                   />
                 </div>
-                <button 
+                <motion.button 
                   type="submit"
+                  animate={isIntaking ? { backgroundColor: "#a855f7", scale: 1.1 } : {}}
                   className="mt-auto group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-white text-black text-sm font-bold hover:scale-105 transition-all duration-300"
                 >
                   <div className="absolute inset-0 rounded-full bg-white blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-500 -z-10" />
-                  Submit Request
+                  {isIntaking ? "Intaking..." : "Submit Request"}
                   <span className="bg-black text-white rounded-full p-1 group-hover:translate-x-1 transition-transform duration-300">
                     <ArrowRight size={14} />
                   </span>
-                </button>
+                </motion.button>
               </motion.form>
             ) : (
               <motion.div 
