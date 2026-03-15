@@ -136,39 +136,39 @@ export default function ContactSection() {
                 onSubmit={handleSubmit}
                 className="absolute inset-0 flex flex-col gap-6 bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-md transform-style-3d shadow-2xl"
               >
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="name" className="text-xs uppercase tracking-widest text-[#A0A0A0]">Name</label>
+                <div className="flex flex-col gap-2 relative group">
+                  <label htmlFor="name" className="text-xs uppercase tracking-widest text-[#A0A0A0] group-focus-within:text-purple-400 transition-colors">Name</label>
                   <input 
                     type="text" 
                     id="name" 
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="bg-transparent border-b border-white/20 pb-2 text-white focus:outline-none focus:border-purple-400 transition-colors"
+                    className="bg-transparent border-b border-white/20 pb-2 text-white focus:outline-none focus:border-purple-400 transition-all duration-300 focus:bg-white/5 px-2 rounded-t-md"
                     placeholder="Satoshi Nakamoto"
                   />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="email" className="text-xs uppercase tracking-widest text-[#A0A0A0]">Email</label>
+                <div className="flex flex-col gap-2 relative group">
+                  <label htmlFor="email" className="text-xs uppercase tracking-widest text-[#A0A0A0] group-focus-within:text-purple-400 transition-colors">Email</label>
                   <input 
                     type="email" 
                     id="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="bg-transparent border-b border-white/20 pb-2 text-white focus:outline-none focus:border-purple-400 transition-colors"
+                    className="bg-transparent border-b border-white/20 pb-2 text-white focus:outline-none focus:border-purple-400 transition-all duration-300 focus:bg-white/5 px-2 rounded-t-md"
                     placeholder="satoshi@bitcoin.org"
                   />
                 </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="message" className="text-xs uppercase tracking-widest text-[#A0A0A0]">Project Details</label>
+                <div className="flex flex-col gap-2 relative group">
+                  <label htmlFor="message" className="text-xs uppercase tracking-widest text-[#A0A0A0] group-focus-within:text-purple-400 transition-colors">Project Details</label>
                   <textarea 
                     id="message" 
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
                     rows={3}
-                    className="bg-transparent border-b border-white/20 pb-2 text-white focus:outline-none focus:border-purple-400 transition-colors resize-none"
+                    className="bg-transparent border-b border-white/20 pb-2 text-white focus:outline-none focus:border-purple-400 transition-all duration-300 focus:bg-white/5 px-2 rounded-t-md resize-none"
                     placeholder="Tell us about your vision..."
                   />
                 </div>

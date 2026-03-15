@@ -4,6 +4,7 @@
   --color-brand-gray: #A0A0A0;
   --color-brand-dark: #030303;
   --animate-spin-slow: spin 3s linear infinite;
+  --font-orbitron: var(--font-orbitron);
 }
 
 @keyframes spin {

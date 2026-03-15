@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { audio } from '@/lib/audioManager';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import gsap from 'gsap';
@@ -12,6 +12,8 @@ if (typeof window !== 'undefined') {
 
 export default function PhilosophySection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
   
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -33,9 +35,36 @@ export default function PhilosophySection() {
   const text = "We don't just build. We elevate. In a sea of fleeting trends, we forge lasting legacies. Your vision deserves more than just attention—it demands ascension.";
   const words = text.split(" ");
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    setMousePosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
   return (
-    <section ref={sectionRef} id="philosophy" className="relative min-h-screen w-full flex items-center px-6 md:px-24 py-32 z-10">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full max-w-7xl mx-auto">
+    <section 
+      ref={sectionRef} 
+      id="philosophy" 
+      className="relative min-h-screen w-full flex items-center px-6 md:px-24 py-32 z-10 overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      {/* Spotlight Effect */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition-opacity duration-300"
+        animate={{
+          opacity: isHovering ? 1 : 0,
+        }}
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(168, 85, 247, 0.08), transparent 40%)`,
+        }}
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 w-full max-w-7xl mx-auto relative z-10">
         {/* Left side for the 3D coin to sit */}
         <div className="hidden md:flex items-center justify-center relative">
           <div id="philosophy-coin-target" className="w-[300px] h-[300px]"></div>

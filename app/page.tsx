@@ -7,10 +7,12 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import Scene from '@/components/Scene';
+import ScrollProgress from '@/components/ScrollProgress';
 
 export default function Home() {
   return (
     <main className="relative w-full min-h-screen">
+      <ScrollProgress />
       <Scene />
       <Header />
       <HeroSection />

@@ -4,21 +4,52 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion } from 'motion/react';
+import { Canvas } from '@react-three/fiber';
+import { Float, Environment } from '@react-three/drei';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 const projects = [
-  { id: 1, title: 'animoca BRANDS', description: 'Advancing digital property rights for gaming and the open metaverse.', shape: 'Icosahedron' },
-  { id: 2, title: 'Immutable', description: 'The leading web3 gaming platform, making building web3 games easy.', shape: 'Octahedron' },
-  { id: 3, title: 'SANDBOX', description: 'A decentralized gaming virtual world driven by the community.', shape: 'Dodecahedron' },
-  { id: 4, title: 'Seedify', description: 'Web3 gaming incubator and launchpad empowering innovators.', shape: 'Tetrahedron' },
-  { id: 5, title: 'MONAD', description: 'High-performance Ethereum-compatible L1 blockchain.', shape: 'TorusKnot' },
-  { id: 6, title: 'BLUR', description: 'The NFT marketplace for pro traders with sweeping features.', shape: 'Sphere' },
-  { id: 7, title: 'POLYGON', description: 'Ethereum scaling platform for fast and secure transactions.', shape: 'Icosahedron' },
-  { id: 8, title: 'SOLANA', description: 'Highly scalable, fast, and secure blockchain for decentralized apps.', shape: 'Octahedron' },
+  { id: 1, title: 'animoca BRANDS', description: 'Scaled their ecosystem through advanced tokenomics and targeted growth strategies.', shape: 'Icosahedron', color: '#3b82f6' },
+  { id: 2, title: 'Immutable', description: 'Drove platform adoption through developer relations and cohesive brand identity.', shape: 'Octahedron', color: '#10b981' },
+  { id: 3, title: 'SANDBOX', description: 'Built a thriving community via metaverse integrations and strategic partnerships.', shape: 'Dodecahedron', color: '#f59e0b' },
+  { id: 4, title: 'Seedify', description: 'Empowered innovators through launchpad strategy, IDO marketing, and user acquisition.', shape: 'Tetrahedron', color: '#8b5cf6' },
+  { id: 5, title: 'MONAD', description: 'Crafted their L1 narrative, streamlined developer onboarding, and managed technical PR.', shape: 'TorusKnot', color: '#ec4899' },
+  { id: 6, title: 'BLUR', description: 'Executed their marketplace launch, designed airdrop mechanics, and acquired pro traders.', shape: 'Sphere', color: '#f97316' },
+  { id: 7, title: 'POLYGON', description: 'Positioned their Layer 2 solution for enterprise adoption and managed their ecosystem fund.', shape: 'Icosahedron', color: '#8b5cf6' },
+  { id: 8, title: 'SOLANA', description: 'Managed network resilience PR, scaled global hackathons, and spearheaded their DeFi revival.', shape: 'Octahedron', color: '#14b8a6' },
 ];
+
+function ProjectIcon({ shape, color }: { shape: string, color: string }) {
+  return (
+    <Canvas camera={{ position: [0, 0, 4], fov: 45 }} className="w-full h-full pointer-events-none">
+      <Environment preset="city" />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 10]} intensity={2} />
+      <Float speed={3} rotationIntensity={1.5} floatIntensity={2}>
+        <mesh>
+          {shape === 'Icosahedron' && <icosahedronGeometry args={[1, 0]} />}
+          {shape === 'Octahedron' && <octahedronGeometry args={[1, 0]} />}
+          {shape === 'Dodecahedron' && <dodecahedronGeometry args={[1, 0]} />}
+          {shape === 'Tetrahedron' && <tetrahedronGeometry args={[1, 0]} />}
+          {shape === 'TorusKnot' && <torusKnotGeometry args={[0.6, 0.2, 128, 16]} />}
+          {shape === 'Sphere' && <sphereGeometry args={[1, 32, 32]} />}
+          <meshPhysicalMaterial 
+            color={color}
+            metalness={0.6}
+            roughness={0.2}
+            clearcoat={1}
+            clearcoatRoughness={0.1}
+            transmission={0.4}
+            thickness={0.5}
+          />
+        </mesh>
+      </Float>
+    </Canvas>
+  );
+}
 
 export default function RadioDialSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -47,15 +78,22 @@ export default function RadioDialSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative w-full aspect-square bg-[#0a0a0a] rounded-3xl flex flex-col items-center justify-center text-white p-6 text-center border border-white/5 hover:border-emerald-500/30 shadow-lg group cursor-pointer transition-all duration-500 overflow-hidden"
+              className="relative w-full aspect-square bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-3xl flex flex-col items-center justify-center text-white p-6 text-center border-t border-l border-white/10 border-b border-r border-black/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_10px_20px_rgba(0,0,0,0.5)] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_15px_30px_rgba(16,185,129,0.15)] group cursor-pointer transition-all duration-500 overflow-hidden"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               
-              <span className="relative z-10 font-bold text-sm md:text-lg tracking-wide transition-transform duration-500 group-hover:-translate-y-6">{project.title}</span>
-              <p className="absolute bottom-6 left-6 right-6 text-xs md:text-sm text-[#888] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 z-10 leading-relaxed">
-                {project.description}
-              </p>
+              {/* 3D Icon Container */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-10 transition-all duration-700 scale-75 group-hover:scale-50">
+                <ProjectIcon shape={project.shape} color={project.color} />
+              </div>
+
+              <span className="relative z-10 font-bold text-lg md:text-xl tracking-wide transition-transform duration-500 group-hover:-translate-y-12 drop-shadow-md">{project.title}</span>
+              
+              <div className="absolute bottom-8 left-6 right-6 opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 z-10">
+                <p className="text-sm text-[#A0A0A0] leading-relaxed font-medium">
+                  {project.description}
+                </p>
+              </div>
             </motion.div>
           ))}
 
@@ -72,15 +110,22 @@ export default function RadioDialSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (index + 4) * 0.1 }}
-              className="relative w-full aspect-square bg-[#0a0a0a] rounded-3xl flex flex-col items-center justify-center text-white p-6 text-center border border-white/5 hover:border-emerald-500/30 shadow-lg group cursor-pointer transition-all duration-500 overflow-hidden"
+              className="relative w-full aspect-square bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-3xl flex flex-col items-center justify-center text-white p-6 text-center border-t border-l border-white/10 border-b border-r border-black/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_10px_20px_rgba(0,0,0,0.5)] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_15px_30px_rgba(16,185,129,0.15)] group cursor-pointer transition-all duration-500 overflow-hidden"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               
-              <span className="relative z-10 font-bold text-sm md:text-lg tracking-wide transition-transform duration-500 group-hover:-translate-y-6">{project.title}</span>
-              <p className="absolute bottom-6 left-6 right-6 text-xs md:text-sm text-[#888] opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 z-10 leading-relaxed">
-                {project.description}
-              </p>
+              {/* 3D Icon Container */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-10 transition-all duration-700 scale-75 group-hover:scale-50">
+                <ProjectIcon shape={project.shape} color={project.color} />
+              </div>
+
+              <span className="relative z-10 font-bold text-lg md:text-xl tracking-wide transition-transform duration-500 group-hover:-translate-y-12 drop-shadow-md">{project.title}</span>
+              
+              <div className="absolute bottom-8 left-6 right-6 opacity-0 translate-y-8 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 z-10">
+                <p className="text-sm text-[#A0A0A0] leading-relaxed font-medium">
+                  {project.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

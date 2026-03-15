@@ -3,9 +3,20 @@
 import { Volume2, VolumeX } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { audio } from '@/lib/audioManager';
+import Magnetic from './Magnetic';
+import { motion, useScroll, useTransform } from 'motion/react';
 
 export default function Header() {
   const [isMuted, setIsMuted] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+
+  useEffect(() => {
+    const unsubscribe = scrollY.on("change", (latest) => {
+      setScrolled(latest > 50);
+    });
+    return () => unsubscribe();
+  }, [scrollY]);
 
   useEffect(() => {
     const handleInteraction = () => {
@@ -32,7 +43,14 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 z-50 px-6 md:px-12 py-6 flex items-center justify-between mix-blend-difference">
+    <motion.header 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed top-4 md:top-8 left-4 md:left-8 right-4 md:right-8 z-50 px-6 md:px-12 py-4 md:py-6 flex items-center justify-between transition-all duration-500 rounded-full ${
+        scrolled ? 'bg-[#030303]/80 backdrop-blur-xl border border-white/10 shadow-2xl py-4' : 'mix-blend-difference'
+      }`}
+    >
       <div className="text-3xl font-serif font-bold tracking-tighter text-white">
         Ascend.
       </div>
@@ -44,21 +62,25 @@ export default function Header() {
       </nav>
 
       <div className="flex items-center gap-4">
-        <button 
-          onClick={toggleMute}
-          className="p-2 rounded-full hover:bg-white/10 transition-colors text-[#A0A0A0] hover:text-white"
-          aria-label="Toggle Sound"
-        >
-          {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-        </button>
-        <a 
-          id="navbar-get-in-touch-target"
-          href="#contact" 
-          className="px-6 py-2.5 rounded-full bg-white text-black text-xs font-bold hover:bg-gray-200 hover:scale-105 transition-all duration-300"
-        >
-          Get in Touch
-        </a>
+        <Magnetic>
+          <button 
+            onClick={toggleMute}
+            className="p-2 rounded-full hover:bg-white/10 transition-colors text-[#A0A0A0] hover:text-white"
+            aria-label="Toggle Sound"
+          >
+            {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+          </button>
+        </Magnetic>
+        <Magnetic>
+          <a 
+            id="navbar-get-in-touch-target"
+            href="#contact" 
+            className="px-6 py-2.5 rounded-full bg-white text-black text-xs font-bold hover:bg-gray-200 transition-all duration-300"
+          >
+            Get in Touch
+          </a>
+        </Magnetic>
       </div>
-    </header>
+    </motion.header>
   );
 }

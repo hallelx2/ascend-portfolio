@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowUp } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { audio } from '@/lib/audioManager';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -14,6 +14,10 @@ if (typeof window !== 'undefined') {
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement>(null);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     if (!footerRef.current) return;
@@ -85,10 +89,10 @@ export default function Footer() {
             <div className="flex flex-col gap-6">
               <span className="text-xs uppercase tracking-[0.2em] text-[#666] font-bold">Socials</span>
               <div className="flex flex-col gap-4 text-sm text-[#A0A0A0]">
-                <a href="#" className="hover:text-white transition-colors">Twitter / X</a>
-                <a href="#" className="hover:text-white transition-colors">Discord</a>
-                <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-                <a href="#" className="hover:text-white transition-colors">Instagram</a>
+                <Magnetic strength={0.1}><a href="#" className="inline-block hover:text-white transition-colors">Twitter / X</a></Magnetic>
+                <Magnetic strength={0.1}><a href="#" className="inline-block hover:text-white transition-colors">Discord</a></Magnetic>
+                <Magnetic strength={0.1}><a href="#" className="inline-block hover:text-white transition-colors">LinkedIn</a></Magnetic>
+                <Magnetic strength={0.1}><a href="#" className="inline-block hover:text-white transition-colors">Instagram</a></Magnetic>
               </div>
             </div>
 
@@ -128,13 +132,22 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-1.5 bg-white/5 px-4 py-2 rounded-full">
             <span className="text-[#A0A0A0]">Created by</span>
-            <span className="font-mono text-white lowercase tracking-normal">hallel</span>
-            <span className="font-['var(--font-orbitron)'] bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-bold text-sm tracking-normal">X2</span>
+            <div className="flex items-center">
+              <span className="font-mono text-white lowercase tracking-normal">hallel</span>
+              <span className="font-orbitron bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent font-bold text-sm tracking-normal lowercase">x2</span>
+            </div>
           </div>
-          <div className="flex gap-8">
+          <div className="flex gap-8 items-center">
             <span>© {new Date().getFullYear()} Ascend Marketing</span>
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
             <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <button 
+              onClick={scrollToTop}
+              className="ml-4 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all duration-300 group shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]"
+              aria-label="Back to top"
+            >
+              <ArrowUp size={16} className="text-[#A0A0A0] group-hover:text-white group-hover:-translate-y-1 transition-all duration-300" />
+            </button>
           </div>
         </div>
       </div>
